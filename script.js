@@ -1,55 +1,60 @@
-const CLIENTE = "lola"; // Cambia por cliente
+
+const CLIENTE = "lola";
 let fotos = [];
 let seleccionadas = [];
 let currentId = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGFMdytceulHbv7t0Fl4ON6jUrSnxKwzBcDdE4NPwo2AzWkeM7z0H0wUkxqYLxcTsc/exec";
 
-// === CARGAR CONFIG ===
-fetch('./config.json?' + Date.now()) // evita caché
+// === CARGAR CONFIG (SIN CACHÉ) ===
+fetch('./config.json?t=' + Date.now())
   .then(r => {
-    if (!r.ok) throw new Error(`Error ${r.status}`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
     return r.json();
   })
   .then(data => {
-    console.log("Config cargado:", data);
+    console.log("CONFIG CARGADO:", data);
 
     // TÍTULO Y DESCRIPCIÓN
-    document.getElementById("titulo").textContent = data.titulo || "Galería";
-    document.getElementById("descripcion").textContent = data.descripcion || "";
+    const tituloEl = document.getElementById("titulo");
+    const descEl = document.getElementById("descripcion");
+    tituloEl.textContent = data.titulo || "Galería";
+    descEl.textContent = data.descripcion || "";
 
     // PORTADA
     const hero = document.querySelector(".hero");
     const portadaImg = document.getElementById("portada-img");
 
     if (data.portada && data.portada.includes("1jsw0LHJRXoixD_K2IfofdP0sdm-nPbqm")) {
+      console.log("CARGANDO PORTADA:", data.portada);
       portadaImg.src = data.portada;
-      portadaImg.onload = () => {
-        hero.style.display = "block";
-        console.log("Portada cargada");
-      };
+      hero.style.display = "block";
+
+      portadaImg.onload = () => console.log("PORTADA CARGADA");
       portadaImg.onerror = () => {
-        console.error("Error cargando portada");
-        hero.style.display = "block"; // mostrar aunque falle
+        console.error("ERROR PORTADA");
+        portadaImg.src = "https://via.placeholder.com/1200x800?text=Portada+No+Cargada";
       };
     } else {
-      hero.style.display = "block"; // sin portada
+      console.warn("SIN PORTADA");
+      hero.style.display = "block";
+      portadaImg.style.display = "none";
     }
 
     // PASSWORD
     if (data.password) {
       const pass = prompt("Contraseña:");
       if (pass !== data.password) {
-        alert("Contraseña incorrecta");
+        alert("Incorrecta");
         location.href = "about:blank";
       }
     }
 
-    fotos = data.fotos;
+    fotos = data.fotos || [];
     cargarSeleccion();
   })
   .catch(err => {
-    console.error("Error:", err);
-    document.body.innerHTML = `<h1 style="color:red;text-align:center;">Error: ${err.message}</h1>`;
+    console.error("ERROR CONFIG:", err);
+    document.body.innerHTML = `<h1 style="color:red">Error: ${err.message}</h1>`;
   });
 
 // === RENDERIZAR GALERÍA ===
