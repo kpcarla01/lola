@@ -5,17 +5,37 @@ let currentId = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyuh3QiQkwpTKwWg4zuUTD9k-gBbrUXxinb_Ekv4F4jbVUQzfQei76PlS5VUl_UxIbD/exec"; // Ej: "https://script.google.com/macros/s/AKfyc.../exec"
 
 // Cargar configuración
-fetch(`./config.json`)
-  .then(r => r.json())
+fetch('./config.json')
+  .then(r => {
+    if (!r.ok) throw new Error(`HTTP ${r.status}: ${r.statusText}`);
+    return r.json();
+  })
   .then(data => {
+    console.log("Config cargado:", data);
+
+    // Título y descripción
     document.getElementById("titulo").textContent = data.titulo;
     document.getElementById("descripcion").textContent = data.descripcion;
+
+    // Portada
+    if (data.portada) {
+      document.getElementById("portada-img").src = data.portada;
+    } else {
+      document.querySelector(".hero").style.display = "none";
+    }
+
+    // Password
     if (data.password) {
       const pass = prompt("Contraseña:");
       if (pass !== data.password) location.href = "/";
     }
+
     fotos = data.fotos;
     cargarSeleccion();
+  })
+  .catch(err => {
+    console.error("Error cargando config.json:", err);
+    document.body.innerHTML = `<h1 style="text-align:center; color:red;">Error: ${err.message}</h1>`;
   });
 
 // Renderizar galería
@@ -67,7 +87,6 @@ function toggleCorazon(id) {
   }
   guardarSeleccion();
   renderizar();
-  // Actualizar lightbox
   const heart = document.getElementById("heart-btn");
   const isSelected = seleccionadas.includes(id);
   heart.textContent = isSelected ? "❤️" : "♡";
