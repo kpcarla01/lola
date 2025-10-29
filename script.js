@@ -2,7 +2,7 @@ const CLIENTE = "lola"; // Cambia por cliente
 let fotos = [];
 let seleccionadas = [];
 let currentId = null;
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyuh3QiQkwpTKwWg4zuUTD9k-gBbrUXxinb_Ekv4F4jbVUQzfQei76PlS5VUl_UxIbD/exec"; // Ej: "https://script.google.com/macros/s/AKfyc.../exec"
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGFMdytceulHbv7t0Fl4ON6jUrSnxKwzBcDdE4NPwo2AzWkeM7z0H0wUkxqYLxcTsc/exec"; // Ej: "https://script.google.com/macros/s/AKfyc.../exec"
 
 // Cargar configuración
 fetch('./config.json')
