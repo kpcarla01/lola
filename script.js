@@ -18,11 +18,11 @@ fetch('./config.json')
     document.getElementById("descripcion").textContent = data.descripcion;
 
     // Portada
-    if (data.portada) {
-      document.getElementById("portada-img").src = data.portada;
-    } else {
-      document.querySelector(".hero").style.display = "none";
-    }
+if (data.portada) {
+  document.getElementById("portada-img").src = data.portada;
+} else {
+  document.querySelector(".hero").style.display = "none";
+}
 
     // Password
     if (data.password) {
