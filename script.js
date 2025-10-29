@@ -17,7 +17,7 @@ fetch('./config.json')
     document.getElementById("titulo").textContent = data.titulo;
     document.getElementById("descripcion").textContent = data.descripcion;
 
-    // Portada
+// Portada
 if (data.portada) {
   document.getElementById("portada-img").src = data.portada;
 } else {
