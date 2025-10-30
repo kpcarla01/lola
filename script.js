@@ -14,18 +14,18 @@ fetch('./config.json?t=' + Date.now())
     document.getElementById("titulo").textContent = data.titulo || "Galería";
     document.getElementById("descripcion").textContent = data.descripcion || "";
 
-    // PORTADA DESDE JSON
-    const hero = document.querySelector(".hero");
-    const portadaImg = document.getElementById("portada-img");
+   // PORTADA DESDE JSON
+const hero = document.querySelector(".hero");
+const portadaImg = document.getElementById("portada-img");
 
-    if (data.portada) {
-      portadaImg.src = data.portada;
-      hero.style.display = "block";
-      console.log("Portada cargada desde JSON");
-    } else {
-      console.warn("SIN PORTADA EN JSON");
-      hero.style.display = "none";
-    }
+if (data.portada) {
+  portadaImg.src = data.portada;
+  hero.style.display = "block";
+  console.log("PORTADA CARGADA:", data.portada);
+} else {
+  console.warn("SIN PORTADA EN JSON");
+  hero.style.display = "none";
+}
 
     // PASSWORD
     if (data.password) {
