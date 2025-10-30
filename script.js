@@ -1,43 +1,31 @@
-
 const CLIENTE = "lola";
 let fotos = [];
 let seleccionadas = [];
 let currentId = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGFMdytceulHbv7t0Fl4ON6jUrSnxKwzBcDdE4NPwo2AzWkeM7z0H0wUkxqYLxcTsc/exec";
 
-// === CARGAR CONFIG (SIN CACHÉ) ===
+// === CARGAR CONFIG ===
 fetch('./config.json?t=' + Date.now())
-  .then(r => {
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    return r.json();
-  })
+  .then(r => r.json())
   .then(data => {
-    console.log("CONFIG CARGADO:", data);
+    console.log("Config:", data);
 
     // TÍTULO Y DESCRIPCIÓN
-    const tituloEl = document.getElementById("titulo");
-    const descEl = document.getElementById("descripcion");
-    tituloEl.textContent = data.titulo || "Galería";
-    descEl.textContent = data.descripcion || "";
+    document.getElementById("titulo").textContent = data.titulo || "Galería";
+    document.getElementById("descripcion").textContent = data.descripcion || "";
 
-    // PORTADA
+    // PORTADA = PRIMERA FOTO (THUMBNAIL GRANDE)
     const hero = document.querySelector(".hero");
     const portadaImg = document.getElementById("portada-img");
 
-    if (data.portada && data.portada.includes("1jsw0LHJRXoixD_K2IfofdP0sdm-nPbqm")) {
-      console.log("CARGANDO PORTADA:", data.portada);
-      portadaImg.src = data.portada;
+    if (data.fotos && data.fotos.length > 0) {
+      const primera = data.fotos[0];
+      // Usa thumbnail grande (w1200)
+      portadaImg.src = primera.thumbnail.replace("&sz=w400", "&sz=w1200");
       hero.style.display = "block";
-
-      portadaImg.onload = () => console.log("PORTADA CARGADA");
-      portadaImg.onerror = () => {
-        console.error("ERROR PORTADA");
-        portadaImg.src = "https://via.placeholder.com/1200x800?text=Portada+No+Cargada";
-      };
+      console.log("Portada: thumbnail grande");
     } else {
-      console.warn("SIN PORTADA");
-      hero.style.display = "block";
-      portadaImg.style.display = "none";
+      hero.style.display = "none";
     }
 
     // PASSWORD
@@ -51,10 +39,6 @@ fetch('./config.json?t=' + Date.now())
 
     fotos = data.fotos || [];
     cargarSeleccion();
-  })
-  .catch(err => {
-    console.error("ERROR CONFIG:", err);
-    document.body.innerHTML = `<h1 style="color:red">Error: ${err.message}</h1>`;
   });
 
 // === RENDERIZAR GALERÍA ===
@@ -114,20 +98,21 @@ function toggleCorazon(id) {
   heart.className = "heart-btn" + (isSelected ? " filled" : "");
 }
 
-// === GUARDAR Y CARGAR ===
+// === GUARDAR SELECCIÓN (IGNORA CORS ERROR) ===
 function guardarSeleccion() {
   fetch(SCRIPT_URL, {
     method: 'POST',
+    mode: 'no-cors', // Evita error CORS
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ cliente: CLIENTE, seleccionadas })
-  }).catch(console.error);
+  }).catch(() => {});
 }
 
 function cargarSeleccion() {
   fetch(`${SCRIPT_URL}?cliente=${CLIENTE}&t=${Date.now()}`)
     .then(r => r.json())
-    .then(data => {
-      seleccionadas = data.seleccionadas || [];
+    .then(d => {
+      seleccionadas = d.seleccionadas || [];
       renderizar();
     })
     .catch(() => renderizar());
