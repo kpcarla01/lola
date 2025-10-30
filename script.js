@@ -2,7 +2,7 @@ const CLIENTE = "lola";
 let fotos = [];
 let seleccionadas = [];
 let currentId = null;
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGFMdytceulHbv7t0Fl4ON6jUrSnxKwzBcDdE4NPwo2AzWkeM7z0H0wUkxqYLxcTsc/exec";
+const SCRIPT_URL = "PEGA_TU_NUEVA_WEB_APP_URL_AQUI";
 
 // === CARGAR CONFIG ===
 fetch('./config.json?t=' + Date.now())
@@ -14,17 +14,16 @@ fetch('./config.json?t=' + Date.now())
     document.getElementById("titulo").textContent = data.titulo || "Galería";
     document.getElementById("descripcion").textContent = data.descripcion || "";
 
-    // PORTADA = PRIMERA FOTO (THUMBNAIL GRANDE)
+    // PORTADA DESDE JSON
     const hero = document.querySelector(".hero");
     const portadaImg = document.getElementById("portada-img");
 
-    if (data.fotos && data.fotos.length > 0) {
-      const primera = data.fotos[0];
-      // Usa thumbnail grande (w1200)
-      portadaImg.src = primera.thumbnail.replace("&sz=w400", "&sz=w1200");
+    if (data.portada) {
+      portadaImg.src = data.portada;
       hero.style.display = "block";
-      console.log("Portada: thumbnail grande");
+      console.log("Portada cargada desde JSON");
     } else {
+      console.warn("SIN PORTADA EN JSON");
       hero.style.display = "none";
     }
 
@@ -41,7 +40,7 @@ fetch('./config.json?t=' + Date.now())
     cargarSeleccion();
   });
 
-// === RENDERIZAR GALERÍA ===
+// === RESTO DEL CÓDIGO (igual) ===
 function renderizar() {
   const gallery = document.getElementById("gallery");
   gallery.innerHTML = fotos.map(foto => `
@@ -52,7 +51,7 @@ function renderizar() {
   `).join('');
 }
 
-// === LIGHTBOX ===
+// Lightbox, corazón, etc. (igual que antes)
 function abrirLightbox(url, id) {
   currentId = id;
   document.getElementById("lightbox-img").src = url;
@@ -81,7 +80,6 @@ document.getElementById("heart-btn").onclick = (e) => {
   toggleCorazon(currentId);
 };
 
-// === CORAZÓN ===
 function toggleCorazon(id) {
   const index = seleccionadas.indexOf(id);
   if (index > -1) {
@@ -98,11 +96,10 @@ function toggleCorazon(id) {
   heart.className = "heart-btn" + (isSelected ? " filled" : "");
 }
 
-// === GUARDAR SELECCIÓN (IGNORA CORS ERROR) ===
 function guardarSeleccion() {
   fetch(SCRIPT_URL, {
     method: 'POST',
-    mode: 'no-cors', // Evita error CORS
+    mode: 'no-cors',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ cliente: CLIENTE, seleccionadas })
   }).catch(() => {});
