@@ -6,18 +6,11 @@ let seleccionadas = [];
 let currentId = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTgubEcPnkc92MYs-sRXj220lvqtlY69I1L_BL5E_c4GxY-FOba0Yc0WBoTvt2U0X-/exec"; // ¡REEMPLAZA CON TU URL!
 
-const CLIENTE = "lola";
-let fotos = [];
-let seleccionadas = [];
-let currentId = null;
-const SCRIPT_URL = "TU_WEB_APP_URL_AQUI"; // ¡REEMPLAZA CON TU URL!
 
-// === CARGAR CONFIG ===
+// CARGAR CONFIG
 fetch('./config.json?t=' + Date.now())
   .then(r => r.json())
   .then(data => {
-    console.log("Config cargado:", data);
-
     document.getElementById("titulo").textContent = data.titulo || "Galería";
     document.getElementById("descripcion").textContent = data.descripcion || "";
 
@@ -44,7 +37,7 @@ fetch('./config.json?t=' + Date.now())
     alert("Error cargando galería");
   });
 
-// === RENDERIZAR GALERÍA ===
+// RENDERIZAR GALERÍA
 function renderizar() {
   const gallery = document.getElementById("gallery");
   if (!gallery) return;
@@ -70,13 +63,13 @@ function renderizar() {
     gallery.appendChild(thumb);
 
     thumb.addEventListener("click", () => {
-      console.log("ABRIENDO FULL:", f.full); // DEBUG
+      console.log("ABRIENDO:", f.full);
       abrirLightbox(f.full, f.id);
     });
   });
 }
 
-// === ABRIR LIGHTBOX ===
+// ABRIR LIGHTBOX
 function abrirLightbox(url, id) {
   currentId = id;
   const lightbox = document.getElementById("lightbox");
@@ -93,15 +86,17 @@ function abrirLightbox(url, id) {
   heartBtn.className = "heart-btn" + (isSelected ? " filled" : "");
 }
 
-// === CERRAR LIGHTBOX ===
+// CERRAR LIGHTBOX
 document.querySelector(".close")?.addEventListener("click", () => {
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightbox-img");
   lightbox.classList.remove("active");
-  setTimeout(() => { lightboxImg.src = ""; }, 300);
+  setTimeout(() => {
+    lightboxImg.src = "";
+  }, 300);
 });
 
-// === CORAZÓN EN LIGHTBOX ===
+// CORAZÓN EN LIGHTBOX
 document.getElementById("heart-btn")?.addEventListener("click", (e) => {
   e.stopPropagation();
   const i = seleccionadas.indexOf(currentId);
@@ -116,7 +111,7 @@ document.getElementById("heart-btn")?.addEventListener("click", (e) => {
   e.target.classList.toggle("filled");
 });
 
-// === GUARDAR SELECCIÓN ===
+// GUARDAR SELECCIÓN
 function guardarSeleccion() {
   fetch(SCRIPT_URL, {
     method: "POST",
@@ -126,7 +121,7 @@ function guardarSeleccion() {
   }).catch(() => {});
 }
 
-// === CARGAR SELECCIÓN ===
+// CARGAR SELECCIÓN
 function cargarSeleccion() {
   fetch(`${SCRIPT_URL}?cliente=${CLIENTE}&t=${Date.now()}`)
     .then(r => r.json())
