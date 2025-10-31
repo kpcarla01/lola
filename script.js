@@ -4,6 +4,7 @@ let seleccionadas = [];
 let currentId = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylN-biy3sKTYgoaKsTqI5ftwD-dufEdVD9rOKGOZyLMO2ONswR5Wx7dgpBPESx6bas/exec";
 
+
 fetch('./config.json?t=' + Date.now())
   .then(r => r.json())
   .then(data => {
