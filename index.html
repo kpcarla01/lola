@@ -3,39 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Galería</title>
+  <title>Galería Lola</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- HERO CON PORTADA -->
-  <header class="hero">
-    <div class="hero-image">
-      <img id="portada-img" src="" alt="Portada">
-    </div>
-    <div class="hero-content">
-      <h1 id="titulo">Cargando...</h1>
-      <p id="descripcion" class="subtitle"></p>
-    </div>
-  </header>
+  <!-- NOMBRE FOTÓGRAFO ARRIBA IZQUIERDA -->
+  <div class="photographer">Carla Fotografía</div>
 
-  <!-- Galería -->
-  <main id="gallery" class="gallery"></main>
+  <!-- PORTADA -->
+  <div class="hero">
+    <img id="portada-img" src="" alt="Portada" />
+  </div>
 
-  <!-- Lightbox -->
+  <!-- INFO EVENTO ABAJO DERECHA -->
+  <div class="event-info">
+    <h1 id="titulo">Lola</h1>
+    <p id="descripcion">Mis Quince</p>
+  </div>
+
+  <!-- GALERÍA -->
+  <div id="gallery" class="gallery"></div>
+
+  <!-- LIGHTBOX -->
   <div id="lightbox" class="lightbox hidden">
     <div class="lightbox-content">
       <span class="close">×</span>
       <img id="lightbox-img" src="" alt="" />
-      <button id="heart-btn" class="heart-btn">Heart</button>
+      <button id="heart-btn" class="heart-btn">♡</button>
     </div>
   </div>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <p>© 2025 Tu Nombre Fotografía. Todos los derechos reservados.</p>
-  </footer>
 
   <script src="script.js"></script>
 </body>
