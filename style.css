@@ -72,7 +72,7 @@ body {
   font-weight: 300;
 }
 
-/* ===== GALERÍA MASONRY (MÁS ANCHA, SIN TOCAR BORDES) ===== */
+/* ===== GALERÍA (VOLVIÓ A 1400px) ===== */
 .gallery {
   column-count: 4;
   column-gap: 12px;
