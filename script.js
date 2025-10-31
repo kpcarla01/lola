@@ -4,12 +4,6 @@ let seleccionadas = [];
 let currentId = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTgubEcPnkc92MYs-sRXj220lvqtlY69I1L_BL5E_c4GxY-FOba0Yc0WBoTvt2U0X-/exec";
 
-const CLIENTE = "lola";
-let fotos = [];
-let seleccionadas = [];
-let currentId = null;
-const SCRIPT_URL = "TU_WEB_APP_URL_AQUI"; // ¡ACTUALIZA!
-
 fetch('./config.json?t=' + Date.now())
   .then(r => r.json())
   .then(data => {
@@ -50,8 +44,9 @@ function abrirLightbox(url, id) {
   document.getElementById("lightbox-img").src = url;
   document.getElementById("lightbox").classList.add("active");
   const btn = document.getElementById("heart-btn");
-  btn.textContent = seleccionadas.includes(id) ? "❤️" : "♡";
-  btn.className = "heart-btn" + (seleccionadas.includes(id) ? " filled" : "");
+  const isSelected = seleccionadas.includes(id);
+  btn.textContent = isSelected ? "❤️" : "♡";
+  btn.className = "heart-btn" + (isSelected ? " filled" : "");
 }
 
 document.querySelector(".close").onclick = () => {
