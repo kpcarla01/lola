@@ -4,7 +4,11 @@ let seleccionadas = [];
 let currentId = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTgubEcPnkc92MYs-sRXj220lvqtlY69I1L_BL5E_c4GxY-FOba0Yc0WBoTvt2U0X-/exec";
 
-
+const CLIENTE = "lola";
+let fotos = [];
+let seleccionadas = [];
+let currentId = null;
+const SCRIPT_URL = "TU_WEB_APP_URL_AQUI"; // ¡ACTUALIZA!
 
 fetch('./config.json?t=' + Date.now())
   .then(r => r.json())
@@ -17,9 +21,6 @@ fetch('./config.json?t=' + Date.now())
     if (data.portada) {
       portadaImg.src = data.portada;
       hero.style.display = "block";
-      console.log("PORTADA:", data.portada);
-    } else {
-      hero.style.display = "none";
     }
 
     if (data.password) {
@@ -35,9 +36,10 @@ fetch('./config.json?t=' + Date.now())
   });
 
 function renderizar() {
-  document.getElementById("gallery").innerHTML = fotos.map(f => `
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = fotos.map(f => `
     <div class="thumb" onclick="abrirLightbox('${f.full}', '${f.id}')">
-      <img src="${f.thumbnail}" alt="${f.filename}">
+      <img src="${f.thumbnail}" alt="${f.filename}" loading="lazy">
       ${seleccionadas.includes(f.id) ? '<div class="selected">❤️</div>' : ''}
     </div>
   `).join('');
@@ -47,7 +49,9 @@ function abrirLightbox(url, id) {
   currentId = id;
   document.getElementById("lightbox-img").src = url;
   document.getElementById("lightbox").classList.add("active");
-  document.getElementById("heart-btn").textContent = seleccionadas.includes(id) ? "❤️" : "♡";
+  const btn = document.getElementById("heart-btn");
+  btn.textContent = seleccionadas.includes(id) ? "❤️" : "♡";
+  btn.className = "heart-btn" + (seleccionadas.includes(id) ? " filled" : "");
 }
 
 document.querySelector(".close").onclick = () => {
@@ -62,6 +66,7 @@ document.getElementById("heart-btn").onclick = (e) => {
   guardarSeleccion();
   renderizar();
   e.target.textContent = seleccionadas.includes(currentId) ? "❤️" : "♡";
+  e.target.classList.toggle("filled");
 };
 
 function guardarSeleccion() {
