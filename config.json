@@ -1,19 +1,4 @@
 {
-  "titulo": "Lola",
-  "descripcion": "Mis Quince",
-  "password": "lola2025",
-  "portada": "https://drive.google.com/thumbnail?id=1ABC123&sz=w1600",
-  "fotos": [
-    {
-      "id": "lola_001",
-      "filename": "IMG_001.jpg",
-      "thumbnail": "https://drive.google.com/thumbnail?id=1ABC123&sz=w400",
-      "full": "https://drive.google.com/uc?export=view&id=1ABC123"
-    }
-  ]
-}
-
-{
   "titulo": "Lola ",
   "descripcion": "Mis Qince",
   "password": "lola2025",
