@@ -6,11 +6,12 @@ let seleccionadas = [];
 let currentId = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTgubEcPnkc92MYs-sRXj220lvqtlY69I1L_BL5E_c4GxY-FOba0Yc0WBoTvt2U0X-/exec"; // ¡REEMPLAZA CON TU URL!
 
+
 // === CARGAR CONFIG ===
 fetch('./config.json?t=' + Date.now())
   .then(r => r.json())
   .then(data => {
-    console.log("Config cargado:", data);
+    console.log("Config OK:", data);
 
     document.getElementById("titulo").textContent = data.titulo || "Galería";
     document.getElementById("descripcion").textContent = data.descripcion || "";
@@ -47,14 +48,13 @@ function renderizar() {
   fotos.forEach(f => {
     const thumb = document.createElement("div");
     thumb.className = "thumb";
-    thumb.dataset.id = f.id; // Para debug
+    thumb.dataset.id = f.id;
 
     const img = document.createElement("img");
     img.src = f.thumbnail;
     img.alt = f.filename;
     img.loading = "lazy";
 
-    // CORAZÓN SI ESTÁ SELECCIONADA
     if (seleccionadas.includes(f.id)) {
       const heart = document.createElement("div");
       heart.className = "selected";
@@ -65,11 +65,10 @@ function renderizar() {
     thumb.appendChild(img);
     gallery.appendChild(thumb);
 
-    // EVENTO CLIC
-    thumb.onclick = (e) => {
-      e.preventDefault();
+    // === EVENTO CLIC CORRECTO ===
+    thumb.addEventListener("click", () => {
       abrirLightbox(f.full, f.id);
-    };
+    });
   });
 }
 
@@ -80,19 +79,11 @@ function abrirLightbox(url, id) {
   const lightboxImg = document.getElementById("lightbox-img");
   const heartBtn = document.getElementById("heart-btn");
 
-  if (!lightbox || !lightboxImg || !heartBtn) {
-    console.error("Falta elemento lightbox");
-    return;
-  }
+  if (!lightbox || !lightboxImg || !heartBtn) return;
 
-  // Mostrar lightbox
   lightbox.classList.add("active");
+  lightboxImg.src = url; // Carga imagen
 
-  // Cargar imagen
-  lightboxImg.src = "";
-  lightboxImg.src = url;
-
-  // Corazón
   const isSelected = seleccionadas.includes(id);
   heartBtn.textContent = isSelected ? "❤️" : "♡";
   heartBtn.className = "heart-btn" + (isSelected ? " filled" : "");
@@ -103,15 +94,15 @@ document.querySelector(".close")?.addEventListener("click", () => {
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightbox-img");
   lightbox.classList.remove("active");
-  lightboxImg.src = "";
+  setTimeout(() => { lightboxImg.src = ""; }, 300); // Limpia después de cerrar
 });
 
 // === CORAZÓN EN LIGHTBOX ===
 document.getElementById("heart-btn")?.addEventListener("click", (e) => {
   e.stopPropagation();
-  const i = seleccionadas.indexOf(currentId);
-  if (i > -1) {
-    seleccionadas.splice(i, 1);
+  const index = seleccionadas.indexOf(currentId);
+  if (index > -1) {
+    seleccionadas.splice(index, 1);
   } else {
     seleccionadas.push(currentId);
   }
