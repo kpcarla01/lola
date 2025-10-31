@@ -6,16 +6,18 @@ let seleccionadas = [];
 let currentId = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTgubEcPnkc92MYs-sRXj220lvqtlY69I1L_BL5E_c4GxY-FOba0Yc0WBoTvt2U0X-/exec"; // ¡REEMPLAZA CON TU URL!
 
-// CARGAR CONFIG
+// === CARGAR CONFIG ===
 fetch('./config.json?t=' + Date.now())
   .then(r => r.json())
   .then(data => {
-    document.getElementById("titulo").textContent = data.titulo;
-    document.getElementById("descripcion").textContent = data.descripcion;
+    console.log("Config cargado:", data);
+
+    document.getElementById("titulo").textContent = data.titulo || "Galería";
+    document.getElementById("descripcion").textContent = data.descripcion || "";
 
     const hero = document.querySelector(".hero");
     const portadaImg = document.getElementById("portada-img");
-    if (data.portada) {
+    if (data.portada && portadaImg && hero) {
       portadaImg.src = data.portada;
       hero.style.display = "block";
     }
@@ -28,89 +30,115 @@ fetch('./config.json?t=' + Date.now())
       }
     }
 
-    fotos = data.fotos;
+    fotos = data.fotos || [];
     cargarSeleccion();
+  })
+  .catch(err => {
+    console.error("Error config:", err);
+    alert("Error cargando galería");
   });
 
-// RENDERIZAR GALERÍA
+// === RENDERIZAR GALERÍA ===
 function renderizar() {
   const gallery = document.getElementById("gallery");
-  gallery.innerHTML = '';
+  if (!gallery) return;
+  gallery.innerHTML = "";
 
   fotos.forEach(f => {
-    const thumb = document.createElement('div');
-    thumb.className = 'thumb';
-    thumb.onclick = () => abrirLightbox(f.full, f.id);
+    const thumb = document.createElement("div");
+    thumb.className = "thumb";
+    thumb.dataset.id = f.id; // Para debug
 
-    const img = document.createElement('img');
+    const img = document.createElement("img");
     img.src = f.thumbnail;
     img.alt = f.filename;
-    img.loading = 'lazy';
+    img.loading = "lazy";
 
+    // CORAZÓN SI ESTÁ SELECCIONADA
     if (seleccionadas.includes(f.id)) {
-      const heart = document.createElement('div');
-      heart.className = 'selected';
-      heart.textContent = '❤️';
+      const heart = document.createElement("div");
+      heart.className = "selected";
+      heart.textContent = "❤️";
       thumb.appendChild(heart);
     }
 
     thumb.appendChild(img);
     gallery.appendChild(thumb);
+
+    // EVENTO CLIC
+    thumb.onclick = (e) => {
+      e.preventDefault();
+      abrirLightbox(f.full, f.id);
+    };
   });
 }
 
-// ABRIR LIGHTBOX (CORREGIDO)
+// === ABRIR LIGHTBOX ===
 function abrirLightbox(url, id) {
   currentId = id;
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightbox-img");
   const heartBtn = document.getElementById("heart-btn");
 
-  // CARGAR IMAGEN GRANDE
-  lightboxImg.src = url;
-  lightboxImg.onload = () => {
-    lightbox.classList.add("active");
-  };
+  if (!lightbox || !lightboxImg || !heartBtn) {
+    console.error("Falta elemento lightbox");
+    return;
+  }
 
-  // CORAZÓN
+  // Mostrar lightbox
+  lightbox.classList.add("active");
+
+  // Cargar imagen
+  lightboxImg.src = "";
+  lightboxImg.src = url;
+
+  // Corazón
   const isSelected = seleccionadas.includes(id);
   heartBtn.textContent = isSelected ? "❤️" : "♡";
   heartBtn.className = "heart-btn" + (isSelected ? " filled" : "");
 }
 
-// CERRAR LIGHTBOX
-document.querySelector(".close").onclick = () => {
+// === CERRAR LIGHTBOX ===
+document.querySelector(".close")?.addEventListener("click", () => {
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightbox-img");
   lightbox.classList.remove("active");
-  lightboxImg.src = ""; // Limpia para próxima carga
-};
+  lightboxImg.src = "";
+});
 
-// CORAZÓN EN LIGHTBOX
-document.getElementById("heart-btn").onclick = (e) => {
+// === CORAZÓN EN LIGHTBOX ===
+document.getElementById("heart-btn")?.addEventListener("click", (e) => {
   e.stopPropagation();
   const i = seleccionadas.indexOf(currentId);
-  if (i > -1) seleccionadas.splice(i, 1);
-  else seleccionadas.push(currentId);
+  if (i > -1) {
+    seleccionadas.splice(i, 1);
+  } else {
+    seleccionadas.push(currentId);
+  }
   guardarSeleccion();
   renderizar();
+
   e.target.textContent = seleccionadas.includes(currentId) ? "❤️" : "♡";
   e.target.classList.toggle("filled");
-};
+});
 
-// GUARDAR Y CARGAR SELECCIÓN
+// === GUARDAR SELECCIÓN ===
 function guardarSeleccion() {
   fetch(SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ cliente: CLIENTE, seleccionadas })
-  });
+  }).catch(() => {});
 }
 
+// === CARGAR SELECCIÓN ===
 function cargarSeleccion() {
   fetch(`${SCRIPT_URL}?cliente=${CLIENTE}&t=${Date.now()}`)
     .then(r => r.json())
-    .then(d => { seleccionadas = d.seleccionadas || []; renderizar(); })
+    .then(d => {
+      seleccionadas = d.seleccionadas || [];
+      renderizar();
+    })
     .catch(() => renderizar());
 }
