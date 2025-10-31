@@ -1,163 +1,55 @@
-/* ===== RESET ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-body {
-  font-family: 'Playfair Display', 'Helvetica Neue', serif;
-  background: #fff;
-  color: #000;
-  overflow-x: hidden;
-}
+/* RESET */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Helvetica Neue', Arial, sans-serif; background:#fff; color:#000; }
 
-/* ===== PORTADA ===== */
-.hero {
-  position: relative;
-  height: 80vh; /* ← COMO PEDISTE */
-  overflow: hidden;
-  display: none;
-}
-.hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-/* ===== OVERLAY PIXIESET ===== */
+/* PORTADA */
+.hero { position:relative; height:80vh; overflow:hidden; display:none; }
+.hero img { width:100%; height:100%; object-fit:cover; }
 .overlay {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 40%, transparent 70%);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 40px;
-  pointer-events: none;
+  position:absolute; top:0; left:0; right:0; bottom:0;
+  background:linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 40%, transparent 70%);
+  display:flex; flex-direction:column; justify-content:space-between;
+  padding:40px; pointer-events:none;
 }
+.photographer { font-size:12px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.9); }
+.event-info { text-align:left; max-width:50%; }
+.event-info h1 { font-size:4.2rem; font-weight:400; margin-bottom:10px; color:#fff; }
+.event-info p { font-size:1.3rem; color:rgba(255,255,255,0.95); }
 
-.photographer {
-  font-size: 12px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.9);
-}
-
-.event-info {
-  text-align: left;
-  max-width: 50%;
-}
-.event-info h1 {
-  font-size: 4.2rem;
-  font-weight: 400;
-  margin-bottom: 10px;
-  color: #fff;
-  line-height: 1;
-}
-.event-info p {
-  font-size: 1.3rem;
-  color: rgba(255,255,255,0.95);
-  font-weight: 300;
-}
-
-/* ===== GALERÍA ===== */
+/* GALERÍA */
 .gallery {
-  column-count: 4;
-  column-gap: 12px;
-  padding: 60px 20px;
-  max-width: 1400px;
-  margin: 0 auto;
+  column-count:4; column-gap:12px; padding:60px 20px; max-width:1400px; margin:0 auto;
 }
-
 .thumb {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  background: #f9f9f9;
-  break-inside: avoid;
-  margin-bottom: 12px;
-  transition: transform 0.3s ease;
+  position:relative; overflow:hidden; cursor:pointer; background:#f9f9f9;
+  break-inside:avoid; margin-bottom:12px; transition:transform .3s;
 }
-.thumb:hover {
-  transform: scale(1.02);
-}
-.thumb img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 0 !important;
-}
+.thumb:hover { transform:scale(1.02); }
+.thumb img { width:100%; height:auto; display:block; border-radius:0; }
+.selected { position:absolute; top:15px; right:15px; font-size:24px; color:#ff3366; pointer-events:none; }
 
-.selected {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  font-size: 24px;
-  pointer-events: none;
-  color: #ff3366;
-  z-index: 2;
-}
-
-/* ===== LIGHTBOX – IMAGEN VISIBLE ===== */
+/* LIGHTBOX – IMAGEN 100% VISIBLE */
 .lightbox {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.95);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease;
+  position:fixed; top:0; left:0; right:0; bottom:0;
+  background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center;
+  z-index:1000; opacity:0; visibility:hidden; transition:opacity .3s;
 }
-.lightbox.active {
-  opacity: 1;
-  visibility: visible;
-}
+.lightbox.active { opacity:1; visibility:visible; }
 .lightbox-content {
-  position: relative;
-  max-width: 90%;
-  max-height: 90%;
-  text-align: center;
+  position:relative; max-width:90%; max-height:90%; text-align:center;
 }
 .lightbox img {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
+  max-width:100%; max-height:100%; width:auto; height:auto;
+  object-fit:contain; display:block; margin:0 auto;
 }
 .close {
-  position: absolute;
-  top: -50px;
-  right: 0;
-  font-size: 36px;
-  color: #fff;
-  cursor: pointer;
-  font-weight: 100;
+  position:absolute; top:-50px; right:0; font-size:36px; color:#fff;
+  cursor:pointer; font-weight:100;
 }
 .heart-btn {
-  position: absolute;
-  bottom: 30px;
-  right: 30px;
-  background: #fff;
-  color: #000;
-  border: none;
-  font-size: 28px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
+  position:absolute; bottom:30px; right:30px;
+  background:#fff; color:#000; border:none; font-size:28px;
+  width:60px; height:60px; border-radius:50%; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
 }
-.heart-btn.filled {
-  background: #ff3366;
-  color: #fff;
-}
+.heart-btn.filled { background:#ff3366; color:#fff; }
