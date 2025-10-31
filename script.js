@@ -54,7 +54,10 @@ function renderizar() {
     thumb.appendChild(img);
     gallery.appendChild(thumb);
 
-    thumb.addEventListener("click", () => abrirLightbox(f.full, f.id));
+    thumb.addEventListener("click", () => {
+      console.log("ABRIENDO FULL:", f.full); // DEBUG
+      abrirLightbox(f.full, f.id);
+    });
   });
 }
 
@@ -99,5 +102,4 @@ function cargarSeleccion() {
     .then(r => r.json())
     .then(d => { seleccionadas = d.seleccionadas || []; renderizar(); })
     .catch(() => renderizar());
-}
 }
