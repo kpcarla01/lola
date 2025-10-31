@@ -2,7 +2,7 @@ const CLIENTE = "lola";
 let fotos = [];
 let seleccionadas = [];
 let currentId = null;
-const SCRIPT_URL = "PEGA_TU_NUEVA_WEB_APP_URL_AQUI";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGFMdytceulHbv7t0Fl4ON6jUrSnxKwzBcDdE4NPwo2AzWkeM7z0H0wUkxqYLxcTsc/exec";
 
 // === CARGAR CONFIG ===
 fetch('./config.json?t=' + Date.now())
