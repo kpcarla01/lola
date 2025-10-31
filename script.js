@@ -4,13 +4,10 @@ let seleccionadas = [];
 let currentId = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylN-biy3sKTYgoaKsTqI5ftwD-dufEdVD9rOKGOZyLMO2ONswR5Wx7dgpBPESx6bas/exec";
 
-
-// === CARGAR CONFIG ===
+// CARGAR CONFIG
 fetch('./config.json?t=' + Date.now())
   .then(r => r.json())
   .then(data => {
-    console.log("Config cargado:", data);
-
     document.getElementById("titulo").textContent = data.titulo || "Galería";
     document.getElementById("descripcion").textContent = data.descripcion || "";
 
@@ -37,7 +34,7 @@ fetch('./config.json?t=' + Date.now())
     alert("Error cargando galería");
   });
 
-// === RENDERIZAR GALERÍA ===
+// RENDERIZAR GALERÍA
 function renderizar() {
   const gallery = document.getElementById("gallery");
   if (!gallery) return;
@@ -63,24 +60,23 @@ function renderizar() {
     gallery.appendChild(thumb);
 
     thumb.addEventListener("click", () => {
-      console.log("ABRIENDO FULL:", f.full);
       abrirLightbox(f.full, f.id);
     });
   });
 }
 
-// === ABRIR LIGHTBOX (SIN ICONO ROTO) ===
+// ABRIR LIGHTBOX – SIN ICONO ROTO
 function abrirLightbox(url, id) {
   currentId = id;
   const lightbox = document.getElementById("lightbox");
   const container = document.getElementById("lightbox-img-container");
   const heartBtn = document.getElementById("heart-btn");
 
-  // LIMPIAR CONTENEDOR
+  // LIMPIAR
   container.innerHTML = "";
   lightbox.style.backgroundImage = "none";
 
-  // MOSTRAR THUMB COMO FONDO MIENTRAS CARGA
+  // FONDO CON THUMB
   const thumbUrl = fotos.find(f => f.id === id)?.thumbnail || "";
   lightbox.style.backgroundImage = `url('${thumbUrl}')`;
   lightbox.style.backgroundSize = "contain";
@@ -89,16 +85,20 @@ function abrirLightbox(url, id) {
 
   lightbox.classList.add("active");
 
-  // CREAR IMAGEN GRANDE
-  const img = document.createElement("img");
+  // CREAR IMAGEN
+  const img = new Image();
   img.src = url;
-  img.alt = ""; // SIN TEXTO ALT
   img.style.opacity = "0";
   img.style.transition = "opacity 0.3s ease";
+  img.style.maxWidth = "100%";
+  img.style.maxHeight = "100%";
+  img.style.width = "auto";
+  img.style.height = "auto";
 
   img.onload = () => {
     lightbox.style.backgroundImage = "none";
     img.style.opacity = "1";
+    container.appendChild(img);
   };
 
   img.onerror = () => {
@@ -106,15 +106,13 @@ function abrirLightbox(url, id) {
     container.innerHTML = "<p style='color:white;'>Error cargando imagen</p>";
   };
 
-  container.appendChild(img);
-
   // CORAZÓN
   const isSelected = seleccionadas.includes(id);
   heartBtn.textContent = isSelected ? "❤️" : "♡";
   heartBtn.className = "heart-btn" + (isSelected ? " filled" : "");
 }
 
-// === CERRAR LIGHTBOX ===
+// CERRAR LIGHTBOX
 document.querySelector(".close")?.addEventListener("click", () => {
   const lightbox = document.getElementById("lightbox");
   const container = document.getElementById("lightbox-img-container");
@@ -125,7 +123,7 @@ document.querySelector(".close")?.addEventListener("click", () => {
   }, 300);
 });
 
-// === CORAZÓN EN LIGHTBOX ===
+// CORAZÓN EN LIGHTBOX
 document.getElementById("heart-btn")?.addEventListener("click", (e) => {
   e.stopPropagation();
   const i = seleccionadas.indexOf(currentId);
@@ -140,7 +138,7 @@ document.getElementById("heart-btn")?.addEventListener("click", (e) => {
   e.target.classList.toggle("filled");
 });
 
-// === GUARDAR SELECCIÓN ===
+// GUARDAR SELECCIÓN
 function guardarSeleccion() {
   fetch(SCRIPT_URL, {
     method: "POST",
@@ -150,7 +148,7 @@ function guardarSeleccion() {
   }).catch(() => {});
 }
 
-// === CARGAR SELECCIÓN ===
+// CARGAR SELECCIÓN
 function cargarSeleccion() {
   fetch(`${SCRIPT_URL}?cliente=${CLIENTE}&t=${Date.now()}`)
     .then(r => r.json())
