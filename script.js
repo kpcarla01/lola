@@ -6,7 +6,7 @@ let currentId = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTgubEcPnkc92MYs-sRXj220lvqtlY69I1L_BL5E_c4GxY-FOba0Yc0WBoTvt2U0X-/exec"; // ¡REEMPLAZA CON TU URL!
 
 
-
+// CARGAR CONFIG
 fetch('./config.json?t=' + Date.now())
   .then(r => r.json())
   .then(data => {
@@ -32,24 +32,41 @@ fetch('./config.json?t=' + Date.now())
     cargarSeleccion();
   });
 
+// RENDERIZAR CON DETECCIÓN DE ORIENTACIÓN
 function renderizar() {
   const gallery = document.getElementById("gallery");
-  gallery.innerHTML = fotos.map(f => {
-    // Detectar si es vertical u horizontal por el nombre o thumbnail
-    const img = new Image();
-    img.src = f.thumbnail;
-    const isVertical = img.naturalWidth < img.naturalHeight;
-    const ratioClass = isVertical ? "vertical" : "horizontal";
+  gallery.innerHTML = '';
 
-    return `
-      <div class="thumb ${ratioClass}" onclick="abrirLightbox('${f.full}', '${f.id}')">
-        <img src="${f.thumbnail}" alt="${f.filename}" loading="lazy">
-        ${seleccionadas.includes(f.id) ? '<div class="selected">❤️</div>' : ''}
-      </div>
-    `;
-  }).join('');
+  fotos.forEach(f => {
+    const thumb = document.createElement('div');
+    thumb.className = 'thumb';
+    thumb.onclick = () => abrirLightbox(f.full, f.id);
+
+    const img = document.createElement('img');
+    img.src = f.thumbnail;
+    img.alt = f.filename;
+    img.loading = 'lazy';
+
+    // Detectar orientación
+    img.onload = () => {
+      const isVertical = img.naturalHeight > img.naturalWidth;
+      thumb.classList.add(isVertical ? 'vertical' : 'horizontal');
+    };
+
+    // Agregar corazón si está seleccionada
+    if (seleccionadas.includes(f.id)) {
+      const heart = document.createElement('div');
+      heart.className = 'selected';
+      heart.textContent = '❤️';
+      thumb.appendChild(heart);
+    }
+
+    thumb.appendChild(img);
+    gallery.appendChild(thumb);
+  });
 }
 
+// LIGHTBOX
 function abrirLightbox(url, id) {
   currentId = id;
   document.getElementById("lightbox-img").src = url;
