@@ -14,7 +14,7 @@ body {
 /* ===== PORTADA (VOLVIÓ A 90vh) ===== */
 .hero {
   position: relative;
-  height: 90vh; /* ← CAMBIO AQUÍ */
+  height: 80vh; /* ← CAMBIO AQUÍ */
   overflow: hidden;
   display: none;
 }
