@@ -6,13 +6,16 @@ let seleccionadas = [];
 let currentId = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTgubEcPnkc92MYs-sRXj220lvqtlY69I1L_BL5E_c4GxY-FOba0Yc0WBoTvt2U0X-/exec"; // ¡REEMPLAZA CON TU URL!
 
+const CLIENTE = "lola";
+let fotos = [];
+let seleccionadas = [];
+let currentId = null;
+const SCRIPT_URL = "TU_WEB_APP_URL_AQUI"; // ¡REEMPLAZA!
 
-// === CARGAR CONFIG ===
+// CARGAR CONFIG
 fetch('./config.json?t=' + Date.now())
   .then(r => r.json())
   .then(data => {
-    console.log("Config OK:", data);
-
     document.getElementById("titulo").textContent = data.titulo || "Galería";
     document.getElementById("descripcion").textContent = data.descripcion || "";
 
@@ -33,13 +36,9 @@ fetch('./config.json?t=' + Date.now())
 
     fotos = data.fotos || [];
     cargarSeleccion();
-  })
-  .catch(err => {
-    console.error("Error config:", err);
-    alert("Error cargando galería");
   });
 
-// === RENDERIZAR GALERÍA ===
+// RENDERIZAR
 function renderizar() {
   const gallery = document.getElementById("gallery");
   if (!gallery) return;
@@ -48,7 +47,6 @@ function renderizar() {
   fotos.forEach(f => {
     const thumb = document.createElement("div");
     thumb.className = "thumb";
-    thumb.dataset.id = f.id;
 
     const img = document.createElement("img");
     img.src = f.thumbnail;
@@ -65,71 +63,53 @@ function renderizar() {
     thumb.appendChild(img);
     gallery.appendChild(thumb);
 
-    // === EVENTO CLIC CORRECTO ===
-    thumb.addEventListener("click", () => {
-      abrirLightbox(f.full, f.id);
-    });
+    thumb.addEventListener("click", () => abrirLightbox(f.full, f.id));
   });
 }
 
-// === ABRIR LIGHTBOX ===
+// ABRIR LIGHTBOX
 function abrirLightbox(url, id) {
   currentId = id;
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightbox-img");
   const heartBtn = document.getElementById("heart-btn");
 
-  if (!lightbox || !lightboxImg || !heartBtn) return;
-
   lightbox.classList.add("active");
-  lightboxImg.src = url; // Carga imagen
+  lightboxImg.src = url;
 
   const isSelected = seleccionadas.includes(id);
   heartBtn.textContent = isSelected ? "❤️" : "♡";
   heartBtn.className = "heart-btn" + (isSelected ? " filled" : "");
 }
 
-// === CERRAR LIGHTBOX ===
+// CERRAR
 document.querySelector(".close")?.addEventListener("click", () => {
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightbox-img");
   lightbox.classList.remove("active");
-  setTimeout(() => { lightboxImg.src = ""; }, 300); // Limpia después de cerrar
+  setTimeout(() => { lightboxImg.src = ""; }, 300);
 });
 
-// === CORAZÓN EN LIGHTBOX ===
+// CORAZÓN
 document.getElementById("heart-btn")?.addEventListener("click", (e) => {
   e.stopPropagation();
-  const index = seleccionadas.indexOf(currentId);
-  if (index > -1) {
-    seleccionadas.splice(index, 1);
-  } else {
-    seleccionadas.push(currentId);
-  }
+  const i = seleccionadas.indexOf(currentId);
+  if (i > -1) seleccionadas.splice(i, 1);
+  else seleccionadas.push(currentId);
   guardarSeleccion();
   renderizar();
-
   e.target.textContent = seleccionadas.includes(currentId) ? "❤️" : "♡";
   e.target.classList.toggle("filled");
 });
 
-// === GUARDAR SELECCIÓN ===
+// GUARDAR / CARGAR
 function guardarSeleccion() {
-  fetch(SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ cliente: CLIENTE, seleccionadas })
-  }).catch(() => {});
+  fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cliente: CLIENTE, seleccionadas }) });
 }
 
-// === CARGAR SELECCIÓN ===
 function cargarSeleccion() {
   fetch(`${SCRIPT_URL}?cliente=${CLIENTE}&t=${Date.now()}`)
     .then(r => r.json())
-    .then(d => {
-      seleccionadas = d.seleccionadas || [];
-      renderizar();
-    })
+    .then(d => { seleccionadas = d.seleccionadas || []; renderizar(); })
     .catch(() => renderizar());
 }
