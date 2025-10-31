@@ -11,10 +11,10 @@ body {
   overflow-x: hidden;
 }
 
-/* ===== PORTADA (VOLVIÓ A 90vh) ===== */
+/* ===== PORTADA ===== */
 .hero {
   position: relative;
-  height: 80vh; /* ← CAMBIO AQUÍ */
+  height: 80vh; /* ← COMO PEDISTE */
   overflow: hidden;
   display: none;
 }
@@ -25,19 +25,11 @@ body {
   object-position: center;
 }
 
-/* ===== OVERLAY  (NEGRO DESDE ABAJO) ===== */
+/* ===== OVERLAY PIXIESET ===== */
 .overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.85) 0%,
-    rgba(0, 0, 0, 0.5) 40%,
-    transparent 70%
-  );
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 40%, transparent 70%);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -45,16 +37,13 @@ body {
   pointer-events: none;
 }
 
-/* ===== FOTÓGRAFO TOP-LEFT ===== */
 .photographer {
   font-size: 12px;
-  font-weight: 400;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255,255,255,0.9);
 }
 
-/* ===== TÍTULO + DESC A LA IZQUIERDA ===== */
 .event-info {
   text-align: left;
   max-width: 50%;
@@ -68,11 +57,11 @@ body {
 }
 .event-info p {
   font-size: 1.3rem;
-  color: rgba(255, 255, 255, 0.95);
+  color: rgba(255,255,255,0.95);
   font-weight: 300;
 }
 
-/* ===== GALERÍA (1400px) ===== */
+/* ===== GALERÍA ===== */
 .gallery {
   column-count: 4;
   column-gap: 12px;
@@ -90,11 +79,9 @@ body {
   margin-bottom: 12px;
   transition: transform 0.3s ease;
 }
-
 .thumb:hover {
   transform: scale(1.02);
 }
-
 .thumb img {
   width: 100%;
   height: auto;
@@ -102,7 +89,6 @@ body {
   border-radius: 0 !important;
 }
 
-/* CORAZÓN */
 .selected {
   position: absolute;
   top: 15px;
@@ -113,14 +99,11 @@ body {
   z-index: 2;
 }
 
-/* ===== LIGHTBOX ===== */
+/* ===== LIGHTBOX – IMAGEN VISIBLE ===== */
 .lightbox {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.95);
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.95);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -137,11 +120,16 @@ body {
   position: relative;
   max-width: 90%;
   max-height: 90%;
+  text-align: center;
 }
 .lightbox img {
   max-width: 100%;
   max-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 .close {
   position: absolute;
