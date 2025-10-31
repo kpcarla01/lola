@@ -1,5 +1,5 @@
 // === script.js - VERSIÓN FINAL SIN ERRORES ===
-const CLIENTE = "lola ";
+const CLIENTE = "lola";
 let fotos = [];
 let seleccionadas = [];
 let currentId = null;
