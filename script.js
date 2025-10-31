@@ -65,7 +65,6 @@ function renderizar() {
   });
 }
 
-// ABRIR LIGHTBOX – SIN ICONO ROTO
 function abrirLightbox(url, id) {
   currentId = id;
   const lightbox = document.getElementById("lightbox");
@@ -90,20 +89,16 @@ function abrirLightbox(url, id) {
   img.src = url;
   img.style.opacity = "0";
   img.style.transition = "opacity 0.3s ease";
-  img.style.maxWidth = "100%";
-  img.style.maxHeight = "100%";
-  img.style.width = "auto";
-  img.style.height = "auto";
 
   img.onload = () => {
     lightbox.style.backgroundImage = "none";
     img.style.opacity = "1";
+    img.classList.add("loaded");
     container.appendChild(img);
   };
 
   img.onerror = () => {
-    lightbox.style.backgroundImage = "none";
-    container.innerHTML = "<p style='color:white;'>Error cargando imagen</p>";
+    container.innerHTML = "<p style='color:white;'>Error</p>";
   };
 
   // CORAZÓN
