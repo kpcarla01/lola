@@ -11,10 +11,10 @@ body {
   overflow-x: hidden;
 }
 
-/* ===== PORTADA ===== */
+/* ===== PORTADA (VOLVIÓ A 90vh) ===== */
 .hero {
   position: relative;
-  height: 90h;
+  height: 90vh; /* ← CAMBIO AQUÍ */
   overflow: hidden;
   display: none;
 }
@@ -25,7 +25,7 @@ body {
   object-position: center;
 }
 
-/* ===== OVERLAY PIXIESET (NEGRO DESDE ABAJO) ===== */
+/* ===== OVERLAY  (NEGRO DESDE ABAJO) ===== */
 .overlay {
   position: absolute;
   top: 0;
@@ -72,7 +72,7 @@ body {
   font-weight: 300;
 }
 
-/* ===== GALERÍA (VOLVIÓ A 1400px) ===== */
+/* ===== GALERÍA (1400px) ===== */
 .gallery {
   column-count: 4;
   column-gap: 12px;
