@@ -43,7 +43,7 @@ function renderizar() {
 
     const img = document.createElement("img");
     img.src = f.thumbnail;
-    img.alt = f.filename;
+    img.alt = ""; // SIN ALT = NO CORAZÓN CHICO
     img.loading = "lazy";
 
     thumb.appendChild(img);
@@ -55,7 +55,7 @@ function renderizar() {
   });
 }
 
-// ABRIR LIGHTBOX
+// ABRIR LIGHTBOX – SIN ERRORES
 function abrirLightbox(url) {
   const lightbox = document.getElementById("lightbox");
   const container = document.getElementById("lightbox-img-container");
@@ -64,19 +64,22 @@ function abrirLightbox(url) {
   lightbox.classList.add("active");
 
   const img = new Image();
-  img.src = url;
+  img.src = url + "&t=" + Date.now(); // EVITA CACHÉ
+  img.alt = ""; // SIN ALT
   img.style.opacity = "0";
   img.style.transition = "opacity 0.5s ease";
+  img.style.maxWidth = "100%";
+  img.style.maxHeight = "100%";
+  img.style.objectFit = "contain";
 
   img.onload = () => {
     container.innerHTML = "";
     img.style.opacity = "1";
-    img.classList.add("loaded");
     container.appendChild(img);
   };
 
   img.onerror = () => {
-    container.innerHTML = '<p style="color:white;">Error</p>';
+    container.innerHTML = '<p style="color:white; font-size:18px;">Error cargando</p>';
   };
 }
 
