@@ -1,8 +1,12 @@
 /* RESET */
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: 'Helvetica Neue', Arial, sans-serif; background:#000; color:#fff; }
+body { 
+  font-family: 'Helvetica Neue', Arial, sans-serif; 
+  background:#fff; 
+  color:#000; 
+}
 
-/* PORTADA CON OVERLAY */
+/* PORTADA */
 .hero {
   position: relative;
   height: 90vh;
@@ -13,49 +17,51 @@ body { font-family: 'Helvetica Neue', Arial, sans-serif; background:#000; color:
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
 }
+
+/* OVERLAY */
 .overlay {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.6) 100%);
+  background: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.7) 100%);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 40px;
+  padding: 50px;
   pointer-events: none;
 }
 
 /* FOTÓGRAFO ARRIBA IZQUIERDA */
 .photographer {
   font-size: 14px;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.8);
+  color: #000;
+  opacity: 0.7;
 }
 
-/* EVENTO ABAJO DERECHA */
+/* EVENTO ABAJO IZQUIERDA */
 .event-info {
-  text-align: right;
+  text-align: left;
 }
 .event-info h1 {
-  font-size: 3.5rem;
+  font-size: 3.8rem;
   font-weight: 300;
   margin-bottom: 8px;
-  line-height: 1;
+  color: #000;
 }
 .event-info p {
-  font-size: 1.3rem;
-  color: rgba(255,255,255,0.9);
+  font-size: 1.4rem;
+  color: #333;
   font-weight: 300;
 }
 
-/* GALERÍA */
+/* GALERÍA - 4:3 o 3:4 */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 3px;
-  padding: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 40px;
   max-width: 1600px;
   margin: 0 auto;
 }
@@ -63,34 +69,47 @@ body { font-family: 'Helvetica Neue', Arial, sans-serif; background:#000; color:
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  background: #111;
-  aspect-ratio: 1 / 1; /* Cuadrado base */
+  background: #f8f8f8;
+  border: 1px solid #eee;
+  transition: all 0.3s ease;
 }
+.thumb:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* ASPECT RATIO 4:3 o 3:4 según la imagen */
 .thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.4s ease;
-  border-radius: 0 !important; /* SIN BORDES REDONDEADOS */
 }
-.thumb:hover img {
-  transform: scale(1.03);
+
+/* Forzamos 4:3 para horizontal, 3:4 para vertical */
+.thumb.horizontal {
+  aspect-ratio: 4 / 3;
 }
+.thumb.vertical {
+  aspect-ratio: 3 / 4;
+}
+
+/* CORAZÓN */
 .selected {
   position: absolute;
   top: 12px;
   right: 12px;
-  font-size: 22px;
+  font-size: 24px;
   pointer-events: none;
-  text-shadow: 0 0 8px rgba(0,0,0,0.8);
+  color: #ff3366;
+  text-shadow: 0 0 8px rgba(255,255,255,0.9);
 }
 
 /* LIGHTBOX */
 .lightbox {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: #000;
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,8 +124,8 @@ body { font-family: 'Helvetica Neue', Arial, sans-serif; background:#000; color:
 }
 .lightbox-content {
   position: relative;
-  max-width: 95%;
-  max-height: 95%;
+  max-width: 90%;
+  max-height: 90%;
 }
 .lightbox img {
   max-width: 100%;
@@ -118,7 +137,7 @@ body { font-family: 'Helvetica Neue', Arial, sans-serif; background:#000; color:
   top: -50px;
   right: 0;
   font-size: 36px;
-  color: #fff;
+  color: #000;
   cursor: pointer;
   font-weight: 100;
 }
@@ -126,9 +145,10 @@ body { font-family: 'Helvetica Neue', Arial, sans-serif; background:#000; color:
   position: absolute;
   bottom: 30px;
   right: 30px;
-  background: rgba(0,0,0,0.5);
+  background: #000;
+  color: #fff;
   border: none;
-  font-size: 30px;
+  font-size: 28px;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -139,6 +159,6 @@ body { font-family: 'Helvetica Neue', Arial, sans-serif; background:#000; color:
   transition: all 0.2s;
 }
 .heart-btn.filled {
-  color: #ff3366;
-  background: rgba(255,51,102,0.2);
+  background: #ff3366;
+  color: #fff;
 }
