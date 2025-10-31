@@ -5,9 +5,12 @@ let currentId = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylN-biy3sKTYgoaKsTqI5ftwD-dufEdVD9rOKGOZyLMO2ONswR5Wx7dgpBPESx6bas/exec";
 
 
+// === CARGAR CONFIG ===
 fetch('./config.json?t=' + Date.now())
   .then(r => r.json())
   .then(data => {
+    console.log("Config cargado:", data);
+
     document.getElementById("titulo").textContent = data.titulo || "Galería";
     document.getElementById("descripcion").textContent = data.descripcion || "";
 
@@ -34,6 +37,7 @@ fetch('./config.json?t=' + Date.now())
     alert("Error cargando galería");
   });
 
+// === RENDERIZAR GALERÍA ===
 function renderizar() {
   const gallery = document.getElementById("gallery");
   if (!gallery) return;
@@ -59,23 +63,24 @@ function renderizar() {
     gallery.appendChild(thumb);
 
     thumb.addEventListener("click", () => {
-      console.log("ABRIENDO:", f.full);
+      console.log("ABRIENDO FULL:", f.full);
       abrirLightbox(f.full, f.id);
     });
   });
 }
 
+// === ABRIR LIGHTBOX (SIN ICONO ROTO) ===
 function abrirLightbox(url, id) {
   currentId = id;
   const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.getElementById("lightbox-img");
+  const container = document.getElementById("lightbox-img-container");
   const heartBtn = document.getElementById("heart-btn");
 
-  // LIMPIAR ANTES
-  lightboxImg.src = "";
-  lightboxImg.classList.remove("loaded");
+  // LIMPIAR CONTENEDOR
+  container.innerHTML = "";
+  lightbox.style.backgroundImage = "none";
 
-  // MOSTRAR THUMB COMO FONDO
+  // MOSTRAR THUMB COMO FONDO MIENTRAS CARGA
   const thumbUrl = fotos.find(f => f.id === id)?.thumbnail || "";
   lightbox.style.backgroundImage = `url('${thumbUrl}')`;
   lightbox.style.backgroundSize = "contain";
@@ -84,37 +89,43 @@ function abrirLightbox(url, id) {
 
   lightbox.classList.add("active");
 
-  // CARGAR IMAGEN GRANDE
-  lightboxImg.src = url;
-  lightboxImg.onload = () => {
+  // CREAR IMAGEN GRANDE
+  const img = document.createElement("img");
+  img.src = url;
+  img.alt = ""; // SIN TEXTO ALT
+  img.style.opacity = "0";
+  img.style.transition = "opacity 0.3s ease";
+
+  img.onload = () => {
     lightbox.style.backgroundImage = "none";
-    lightboxImg.classList.add("loaded");
+    img.style.opacity = "1";
   };
 
+  img.onerror = () => {
+    lightbox.style.backgroundImage = "none";
+    container.innerHTML = "<p style='color:white;'>Error cargando imagen</p>";
+  };
+
+  container.appendChild(img);
+
+  // CORAZÓN
   const isSelected = seleccionadas.includes(id);
   heartBtn.textContent = isSelected ? "❤️" : "♡";
   heartBtn.className = "heart-btn" + (isSelected ? " filled" : "");
 }
 
-  // CUANDO CARGA LA GRANDE → QUITAR FONDO
-  lightboxImg.onload = () => {
-    lightbox.style.backgroundImage = "none";
-  };
-
-  const isSelected = seleccionadas.includes(id);
-  heartBtn.textContent = isSelected ? "❤️" : "♡";
-  heartBtn.className = "heart-btn" + (isSelected ? " filled" : "");
-}
-
+// === CERRAR LIGHTBOX ===
 document.querySelector(".close")?.addEventListener("click", () => {
   const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.getElementById("lightbox-img");
+  const container = document.getElementById("lightbox-img-container");
   lightbox.classList.remove("active");
   setTimeout(() => {
-    lightboxImg.src = "";
+    container.innerHTML = "";
+    lightbox.style.backgroundImage = "none";
   }, 300);
 });
 
+// === CORAZÓN EN LIGHTBOX ===
 document.getElementById("heart-btn")?.addEventListener("click", (e) => {
   e.stopPropagation();
   const i = seleccionadas.indexOf(currentId);
@@ -129,6 +140,7 @@ document.getElementById("heart-btn")?.addEventListener("click", (e) => {
   e.target.classList.toggle("filled");
 });
 
+// === GUARDAR SELECCIÓN ===
 function guardarSeleccion() {
   fetch(SCRIPT_URL, {
     method: "POST",
@@ -138,6 +150,7 @@ function guardarSeleccion() {
   }).catch(() => {});
 }
 
+// === CARGAR SELECCIÓN ===
 function cargarSeleccion() {
   fetch(`${SCRIPT_URL}?cliente=${CLIENTE}&t=${Date.now()}`)
     .then(r => r.json())
