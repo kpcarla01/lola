@@ -125,6 +125,7 @@ body {
   width: auto;
   height: auto;
   object-fit: contain;
+  display: block;
   opacity: 0;
   transition: opacity 0.5s ease;
 }
