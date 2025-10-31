@@ -71,10 +71,20 @@ function abrirLightbox(url, id) {
   const lightboxImg = document.getElementById("lightbox-img");
   const heartBtn = document.getElementById("heart-btn");
 
-  if (!lightbox || !lightboxImg || !heartBtn) return;
+  // MOSTRAR THUMB COMO FONDO MIENTRAS CARGA
+  const thumbUrl = fotos.find(f => f.id === id)?.thumbnail || "";
+  lightbox.style.backgroundImage = `url('${thumbUrl}')`;
+  lightbox.style.backgroundSize = "contain";
+  lightbox.style.backgroundPosition = "center";
+  lightbox.style.backgroundRepeat = "no-repeat";
 
   lightbox.classList.add("active");
   lightboxImg.src = url;
+
+  // CUANDO CARGA LA GRANDE → QUITAR FONDO
+  lightboxImg.onload = () => {
+    lightbox.style.backgroundImage = "none";
+  };
 
   const isSelected = seleccionadas.includes(id);
   heartBtn.textContent = isSelected ? "❤️" : "♡";
