@@ -6,8 +6,6 @@ let seleccionadas = [];
 let currentId = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTgubEcPnkc92MYs-sRXj220lvqtlY69I1L_BL5E_c4GxY-FOba0Yc0WBoTvt2U0X-/exec"; // ¡REEMPLAZA CON TU URL!
 
-
-// CARGAR CONFIG
 fetch('./config.json?t=' + Date.now())
   .then(r => r.json())
   .then(data => {
@@ -16,7 +14,7 @@ fetch('./config.json?t=' + Date.now())
 
     const hero = document.querySelector(".hero");
     const portadaImg = document.getElementById("portada-img");
-    if (data.portada && portadaImg && hero) {
+    if (data.portada) {
       portadaImg.src = data.portada;
       hero.style.display = "block";
     }
@@ -33,10 +31,8 @@ fetch('./config.json?t=' + Date.now())
     cargarSeleccion();
   });
 
-// RENDERIZAR
 function renderizar() {
   const gallery = document.getElementById("gallery");
-  if (!gallery) return;
   gallery.innerHTML = "";
 
   fotos.forEach(f => {
@@ -62,7 +58,6 @@ function renderizar() {
   });
 }
 
-// ABRIR LIGHTBOX
 function abrirLightbox(url, id) {
   currentId = id;
   const lightbox = document.getElementById("lightbox");
@@ -77,16 +72,14 @@ function abrirLightbox(url, id) {
   heartBtn.className = "heart-btn" + (isSelected ? " filled" : "");
 }
 
-// CERRAR
-document.querySelector(".close")?.addEventListener("click", () => {
+document.querySelector(".close").addEventListener("click", () => {
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightbox-img");
   lightbox.classList.remove("active");
   setTimeout(() => { lightboxImg.src = ""; }, 300);
 });
 
-// CORAZÓN
-document.getElementById("heart-btn")?.addEventListener("click", (e) => {
+document.getElementById("heart-btn").addEventListener("click", (e) => {
   e.stopPropagation();
   const i = seleccionadas.indexOf(currentId);
   if (i > -1) seleccionadas.splice(i, 1);
@@ -97,7 +90,6 @@ document.getElementById("heart-btn")?.addEventListener("click", (e) => {
   e.target.classList.toggle("filled");
 });
 
-// GUARDAR / CARGAR
 function guardarSeleccion() {
   fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cliente: CLIENTE, seleccionadas }) });
 }
@@ -107,4 +99,5 @@ function cargarSeleccion() {
     .then(r => r.json())
     .then(d => { seleccionadas = d.seleccionadas || []; renderizar(); })
     .catch(() => renderizar());
+}
 }
