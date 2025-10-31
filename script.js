@@ -71,7 +71,11 @@ function abrirLightbox(url, id) {
   const lightboxImg = document.getElementById("lightbox-img");
   const heartBtn = document.getElementById("heart-btn");
 
-  // MOSTRAR THUMB COMO FONDO MIENTRAS CARGA
+  // LIMPIAR ANTES
+  lightboxImg.src = "";
+  lightboxImg.classList.remove("loaded");
+
+  // MOSTRAR THUMB COMO FONDO
   const thumbUrl = fotos.find(f => f.id === id)?.thumbnail || "";
   lightbox.style.backgroundImage = `url('${thumbUrl}')`;
   lightbox.style.backgroundSize = "contain";
@@ -79,7 +83,18 @@ function abrirLightbox(url, id) {
   lightbox.style.backgroundRepeat = "no-repeat";
 
   lightbox.classList.add("active");
+
+  // CARGAR IMAGEN GRANDE
   lightboxImg.src = url;
+  lightboxImg.onload = () => {
+    lightbox.style.backgroundImage = "none";
+    lightboxImg.classList.add("loaded");
+  };
+
+  const isSelected = seleccionadas.includes(id);
+  heartBtn.textContent = isSelected ? "❤️" : "♡";
+  heartBtn.className = "heart-btn" + (isSelected ? " filled" : "");
+}
 
   // CUANDO CARGA LA GRANDE → QUITAR FONDO
   lightboxImg.onload = () => {
