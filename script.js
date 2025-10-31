@@ -100,7 +100,11 @@ document.getElementById("heart-btn")?.addEventListener("click", (e) => {
   } else {
     seleccionadas.push(currentId);
   }
-  
+  guardarSeleccion();
+  renderizar();
+  e.target.textContent = seleccionadas.includes(currentId) ? "❤️" : "♡";
+  e.target.classList.toggle("filled");
+});
 
 function guardarSeleccion() {
   fetch(SCRIPT_URL, {
