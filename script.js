@@ -1,37 +1,32 @@
+// === script.js - VERSIÓN FINAL SIN ERRORES ===
 const CLIENTE = "lola";
 let fotos = [];
 let seleccionadas = [];
 let currentId = null;
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTgubEcPnkc92MYs-sRXj220lvqtlY69I1L_BL5E_c4GxY-FOba0Yc0WBoTvt2U0X-/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTgubEcPnkc92MYs-sRXj220lvqtlY69I1L_BL5E_c4GxY-FOba0Yc0WBoTvt2U0X-/exec"; // ¡REEMPLAZA CON TU URL!
 
-// === CARGAR CONFIG CON DEBUG ===
+// CARGAR CONFIG
 fetch('./config.json?t=' + Date.now())
   .then(r => {
-    if (!r.ok) throw new Error("No se pudo cargar config.json");
+    if (!r.ok) throw new Error("config.json no encontrado");
     return r.json();
   })
   .then(data => {
     console.log("CONFIG CARGADO:", data);
 
-    // TÍTULO Y DESCRIPCIÓN
-    const tituloEl = document.getElementById("titulo");
-    const descEl = document.getElementById("descripcion");
-    if (tituloEl) tituloEl.textContent = data.titulo || "Galería";
-    if (descEl) descEl.textContent = data.descripcion || "";
+    const titulo = document.getElementById("titulo");
+    const desc = document.getElementById("descripcion");
+    if (titulo) titulo.textContent = data.titulo || "Galería";
+    if (desc) desc.textContent = data.descripcion || "";
 
-    // PORTADA
     const hero = document.querySelector(".hero");
     const portadaImg = document.getElementById("portada-img");
     if (data.portada && portadaImg && hero) {
       portadaImg.src = data.portada;
       hero.style.display = "block";
       console.log("PORTADA CARGADA:", data.portada);
-    } else {
-      console.warn("SIN PORTADA O FALTA ELEMENTO");
-      if (hero) hero.style.display = "none";
     }
 
-    // PASSWORD
     if (data.password) {
       const pass = prompt("Contraseña:");
       if (pass !== data.password) {
@@ -44,11 +39,11 @@ fetch('./config.json?t=' + Date.now())
     cargarSeleccion();
   })
   .catch(err => {
-    console.error("ERROR CARGANDO CONFIG:", err);
-    alert("Error: No se pudo cargar la galería. Revisa la consola (F12).");
+    console.error("ERROR:", err);
+    alert("Error cargando galería. Abre consola (F12).");
   });
 
-// === RENDERIZAR GALERÍA ===
+// RENDERIZAR
 function renderizar() {
   const gallery = document.getElementById("gallery");
   if (!gallery) return;
@@ -60,7 +55,7 @@ function renderizar() {
   `).join('');
 }
 
-// === LIGHTBOX ===
+// LIGHTBOX
 function abrirLightbox(url, id) {
   currentId = id;
   const img = document.getElementById("lightbox-img");
@@ -75,6 +70,7 @@ function abrirLightbox(url, id) {
   }
 }
 
+// EVENTOS
 document.querySelector(".close")?.addEventListener("click", () => {
   document.getElementById("lightbox")?.classList.remove("active");
 });
@@ -90,7 +86,7 @@ document.getElementById("heart-btn")?.addEventListener("click", (e) => {
   e.target.classList.toggle("filled");
 });
 
-// === GUARDAR Y CARGAR SELECCIÓN ===
+// GUARDAR Y CARGAR
 function guardarSeleccion() {
   fetch(SCRIPT_URL, {
     method: 'POST',
