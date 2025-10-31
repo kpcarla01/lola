@@ -14,18 +14,22 @@ fetch('./config.json?t=' + Date.now())
     document.getElementById("titulo").textContent = data.titulo || "Galería";
     document.getElementById("descripcion").textContent = data.descripcion || "";
 
-   // PORTADA DESDE JSON
-const hero = document.querySelector(".hero");
-const portadaImg = document.getElementById("portada-img");
+    // PORTADA DESDE JSON
+    const hero = document.querySelector(".hero");
+    const portadaImg = document.getElementById("portada-img");
 
-if (data.portada) {
-  portadaImg.src = data.portada;
-  hero.style.display = "block";
-  console.log("PORTADA CARGADA:", data.portada);
-} else {
-  console.warn("SIN PORTADA EN JSON");
-  hero.style.display = "none";
-}
+    if (data.portada) {
+      portadaImg.src = data.portada; // Usa la URL del JSON (thumbnail?sz=w1200)
+      hero.style.display = "block";
+      console.log("PORTADA CARGADA:", data.portada);
+      portadaImg.onerror = () => {
+        console.error("ERROR CARGANDO PORTADA");
+        hero.style.display = "none";
+      };
+    } else {
+      console.warn("SIN PORTADA EN JSON");
+      hero.style.display = "none";
+    }
 
     // PASSWORD
     if (data.password) {
@@ -40,7 +44,7 @@ if (data.portada) {
     cargarSeleccion();
   });
 
-// === RESTO DEL CÓDIGO (igual) ===
+// === RENDERIZAR GALERÍA ===
 function renderizar() {
   const gallery = document.getElementById("gallery");
   gallery.innerHTML = fotos.map(foto => `
@@ -51,7 +55,7 @@ function renderizar() {
   `).join('');
 }
 
-// Lightbox, corazón, etc. (igual que antes)
+// === LIGHTBOX ===
 function abrirLightbox(url, id) {
   currentId = id;
   document.getElementById("lightbox-img").src = url;
@@ -80,6 +84,7 @@ document.getElementById("heart-btn").onclick = (e) => {
   toggleCorazon(currentId);
 };
 
+// === CORAZÓN ===
 function toggleCorazon(id) {
   const index = seleccionadas.indexOf(id);
   if (index > -1) {
@@ -96,6 +101,7 @@ function toggleCorazon(id) {
   heart.className = "heart-btn" + (isSelected ? " filled" : "");
 }
 
+// === GUARDAR SELECCIÓN ===
 function guardarSeleccion() {
   fetch(SCRIPT_URL, {
     method: 'POST',
@@ -105,6 +111,7 @@ function guardarSeleccion() {
   }).catch(() => {});
 }
 
+// === CARGAR SELECCIÓN ===
 function cargarSeleccion() {
   fetch(`${SCRIPT_URL}?cliente=${CLIENTE}&t=${Date.now()}`)
     .then(r => r.json())
