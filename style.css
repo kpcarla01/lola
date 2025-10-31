@@ -127,7 +127,13 @@ body {
   width: auto;
   height: auto;
   object-fit: contain;
-  display: block;
+  display: none; /* ← OCULTO AL INICIO */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.lightbox img.loaded {
+  display: block; /* ← SE MUESTRA CUANDO CARGA */
+  opacity: 1;
 }
 .close {
   position: absolute;
