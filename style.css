@@ -72,29 +72,13 @@ body {
   font-weight: 300;
 }
 
-/* ===== GALERÍA MÁS ANCHA (COMO PIXIESET) ===== */
+/* ===== GALERÍA MASONRY (MÁS ANCHA, SIN TOCAR BORDES) ===== */
 .gallery {
-  column-count: 5;
+  column-count: 4;
   column-gap: 12px;
-  padding: 60px 40px;
-  max-width: 1700px;
+  padding: 60px 20px;
+  max-width: 1400px;
   margin: 0 auto;
-}
-
-@media (max-width: 1600px) {
-  .gallery {
-    column-count: 4;
-  }
-}
-@media (max-width: 1200px) {
-  .gallery {
-    column-count: 3;
-  }
-}
-@media (max-width: 800px) {
-  .gallery {
-    column-count: 2;
-  }
 }
 
 .thumb {
