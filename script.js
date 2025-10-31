@@ -55,21 +55,14 @@ function renderizar() {
   });
 }
 
-// ABRIR LIGHTBOX – SIN CORAZÓN
+// ABRIR LIGHTBOX
 function abrirLightbox(url) {
   const lightbox = document.getElementById("lightbox");
   const container = document.getElementById("lightbox-img-container");
 
-  // LIMPIAR
-  container.innerHTML = "";
-  lightbox.style.backgroundImage = "none";
-
-  // SPINNER
   container.innerHTML = '<div class="spinner">Cargando...</div>';
-
   lightbox.classList.add("active");
 
-  // IMAGEN GRANDE
   const img = new Image();
   img.src = url;
   img.style.opacity = "0";
@@ -94,6 +87,5 @@ document.querySelector(".close")?.addEventListener("click", () => {
   lightbox.classList.remove("active");
   setTimeout(() => {
     container.innerHTML = "";
-    lightbox.style.backgroundImage = "none";
   }, 300);
 });
