@@ -1,4 +1,19 @@
 {
+  "titulo": "Lola",
+  "descripcion": "Mis Quince",
+  "password": "lola2025",
+  "portada": "https://drive.google.com/thumbnail?id=1ABC123&sz=w1600",
+  "fotos": [
+    {
+      "id": "lola_001",
+      "filename": "IMG_001.jpg",
+      "thumbnail": "https://drive.google.com/thumbnail?id=1ABC123&sz=w400",
+      "full": "https://drive.google.com/uc?export=view&id=1ABC123"
+    }
+  ]
+}
+
+{
   "titulo": "Lola ",
   "descripcion": "Mis Qince",
   "password": "lola2025",
@@ -20,25 +35,25 @@
       "id": "lola_img3",
       "filename": "ALE09991.jpg",
       "thumbnail": "https://drive.google.com/thumbnail?id=1oWZYptFTw7opA3OL8uDq3aleYMo9cs2L&sz=w400",
-      "full": "https://drive.google.com/uc?export=view&id=1oWZYptFTw7opA3OL8uDq3aleYMo9cs2L"
+      "full": "https://drive.google.com/thumbnail?id=1oWZYptFTw7opA3OL8uDq3aleYMo9cs2L=w1200"
     },
     {
       "id": "lola_img4",
       "filename": "ALE09990.jpg",
       "thumbnail": "https://drive.google.com/thumbnail?id=11YSLwpak_afhkilq2gGAdFfkPyV2szTo&sz=w400",
-      "full": "https://drive.google.com/uc?export=view&id=11YSLwpak_afhkilq2gGAdFfkPyV2szTo"
+      "full": "https://drive.google.com/uc?export=view&id=11YSLwpak_afhkilq2gGAdFfkPyV2szTo=w1200"
     },
     {
       "id": "lola_img5",
       "filename": "ALE09989.jpg",
       "thumbnail": "https://drive.google.com/thumbnail?id=1j47fSgkL0Iou8LC3rY3D3-wstCzedKJT&sz=w400",
-      "full": "https://drive.google.com/uc?export=view&id=1j47fSgkL0Iou8LC3rY3D3-wstCzedKJT"
+      "full":  "https://drive.google.com/thumbnail?id=1j47fSgkL0Iou8LC3rY3D3-wstCzedKJT=w2048"
     },
     {
       "id": "lola_img6",
       "filename": "ALE09987.jpg",
       "thumbnail": "https://drive.google.com/thumbnail?id=1t3sCCNvaolqF82q9fgLOB6EfvSleO6SB&sz=w400",
-      "full": "https://drive.google.com/uc?export=view&id=1t3sCCNvaolqF82q9fgLOB6EfvSleO6SB"
+      "full": "https://drive.google.com/thumbnail?id=1t3sCCNvaolqF82q9fgLOB6EfvSleO6SB&sz=w2048"
     },
     {
       "id": "lola_img7",
