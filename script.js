@@ -2,7 +2,7 @@ const CLIENTE = "lola";
 let fotos = [];
 let seleccionadas = [];
 let currentId = null;
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGFMdytceulHbv7t0Fl4ON6jUrSnxKwzBcDdE4NPwo2AzWkeM7z0H0wUkxqYLxcTsc/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTgubEcPnkc92MYs-sRXj220lvqtlY69I1L_BL5E_c4GxY-FOba0Yc0WBoTvt2U0X-/exec";
 
 // === CARGAR CONFIG ===
 fetch('./config.json?t=' + Date.now())
