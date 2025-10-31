@@ -15,21 +15,17 @@ fetch('./config.json?t=' + Date.now())
     document.getElementById("descripcion").textContent = data.descripcion || "";
 
     // PORTADA DESDE JSON
-    const hero = document.querySelector(".hero");
-    const portadaImg = document.getElementById("portada-img");
+const hero = document.querySelector(".hero");
+const portadaImg = document.getElementById("portada-img");
 
-    if (data.portada) {
-      portadaImg.src = data.portada; // Usa la URL del JSON (thumbnail?sz=w1200)
-      hero.style.display = "block";
-      console.log("PORTADA CARGADA:", data.portada);
-      portadaImg.onerror = () => {
-        console.error("ERROR CARGANDO PORTADA");
-        hero.style.display = "none";
-      };
-    } else {
-      console.warn("SIN PORTADA EN JSON");
-      hero.style.display = "none";
-    }
+if (data.portada) {
+  portadaImg.src = data.portada;
+  hero.style.display = "block";
+  console.log("PORTADA CARGADA:", data.portada);
+} else {
+  console.warn("SIN PORTADA EN JSON");
+  hero.style.display = "none";
+}
 
     // PASSWORD
     if (data.password) {
